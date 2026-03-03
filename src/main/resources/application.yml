@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: transact-guard
+  kafka:
+    # Kafka auto-config disabled until Day 4+
+    # bootstrap-servers: localhost:9092
+
+server:
+  port: 8080
+
+# AWS DynamoDB config (Day 6)
+# aws:
+#   dynamodb:
+#     endpoint: http://localhost:8000
+#     region: eu-west-1
