@@ -2,8 +2,6 @@
 
 A Spring Boot AML (Anti-Money Laundering) transaction monitoring engine. Flags suspicious financial activity using pluggable, rule-based detection.
 
-> Built as a portfolio project to demonstrate Java/Spring Boot expertise and AML domain knowledge.
-
 ## Architecture
 
 ```
