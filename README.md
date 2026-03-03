@@ -31,7 +31,7 @@ Each detection rule implements the `TransactionRule` interface. Adding a new rul
 
 ## 7-Day Build Plan
 
-- [ ] **Day 1** — Project scaffolding, README, CI skeleton
+- [x] **Day 1** — Project scaffolding, README, CI skeleton
 - [ ] **Day 2** — `TransactionRule` interface + rule engine core
 - [ ] **Day 3** — Implement all 4 rules: Structuring, Velocity, Round-tripping, Anomaly
 - [ ] **Day 4** — `POST /transactions` endpoint + unit tests (in-memory storage)
