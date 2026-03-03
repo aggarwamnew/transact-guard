@@ -18,6 +18,10 @@ import java.util.Optional;
  * Spring auto-injects every {@code @Component} that implements
  * {@link TransactionRule}, so adding a new rule requires zero changes here.
  * </p>
+ *
+ * <p>
+ * All evaluations are logged for audit trail compliance.
+ * </p>
  */
 @Component
 public class RuleEngine {
@@ -28,7 +32,7 @@ public class RuleEngine {
 
     public RuleEngine(List<TransactionRule> rules) {
         this.rules = rules;
-        log.info("RuleEngine initialized with {} rules: {}",
+        log.info("AUDIT | RuleEngine initialized | ruleCount={} | rules={}",
                 rules.size(),
                 rules.stream().map(TransactionRule::name).toList());
     }
@@ -41,21 +45,32 @@ public class RuleEngine {
      * @return list of alerts (empty if no rules triggered)
      */
     public List<Alert> evaluate(Transaction transaction, List<Transaction> history) {
+        log.info("AUDIT | Evaluation started | txId={} | from={} | to={} | amount={} {} | historySize={}",
+                transaction.id(), transaction.fromAccount(), transaction.toAccount(),
+                transaction.amount(), transaction.currency(), history.size());
+
         List<Alert> alerts = new ArrayList<>();
 
         for (TransactionRule rule : rules) {
             try {
                 Optional<Alert> alert = rule.evaluate(transaction, history);
-                alert.ifPresent(a -> {
-                    log.warn("Rule [{}] triggered for transaction {} — risk: {}",
-                            rule.name(), transaction.id(), a.riskLevel());
-                    alerts.add(a);
-                });
+                if (alert.isPresent()) {
+                    alerts.add(alert.get());
+                    log.warn("AUDIT | Rule TRIGGERED | txId={} | rule={} | risk={} | alertId={} | reason={}",
+                            transaction.id(), rule.name(), alert.get().riskLevel(),
+                            alert.get().id(), alert.get().description());
+                } else {
+                    log.debug("AUDIT | Rule passed | txId={} | rule={}",
+                            transaction.id(), rule.name());
+                }
             } catch (Exception e) {
-                log.error("Rule [{}] threw exception for transaction {}: {}",
+                log.error("AUDIT | Rule EXCEPTION | txId={} | rule={} | error={}",
                         rule.name(), transaction.id(), e.getMessage(), e);
             }
         }
+
+        log.info("AUDIT | Evaluation complete | txId={} | rulesEvaluated={} | alertsRaised={}",
+                transaction.id(), rules.size(), alerts.size());
 
         return Collections.unmodifiableList(alerts);
     }
@@ -63,7 +78,7 @@ public class RuleEngine {
     /**
      * @return names of all registered rules
      */
-    public List<String> registeredRules() {
+    public List<RuleName> registeredRules() {
         return rules.stream().map(TransactionRule::name).toList();
     }
 }

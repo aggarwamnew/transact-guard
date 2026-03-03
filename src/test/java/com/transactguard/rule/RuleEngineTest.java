@@ -19,8 +19,8 @@ class RuleEngineTest {
      */
     private static class AlwaysAlertRule implements TransactionRule {
         @Override
-        public String name() {
-            return "ALWAYS_ALERT";
+        public RuleName name() {
+            return RuleName.HIGH_VALUE;
         }
 
         @Override
@@ -35,8 +35,8 @@ class RuleEngineTest {
      */
     private static class NeverAlertRule implements TransactionRule {
         @Override
-        public String name() {
-            return "NEVER_ALERT";
+        public RuleName name() {
+            return RuleName.VELOCITY;
         }
 
         @Override
@@ -50,8 +50,8 @@ class RuleEngineTest {
      */
     private static class BrokenRule implements TransactionRule {
         @Override
-        public String name() {
-            return "BROKEN";
+        public RuleName name() {
+            return RuleName.STRUCTURING;
         }
 
         @Override
@@ -77,7 +77,7 @@ class RuleEngineTest {
         List<Alert> alerts = engine.evaluate(sampleTransaction(), Collections.emptyList());
 
         assertEquals(1, alerts.size());
-        assertEquals("ALWAYS_ALERT", alerts.get(0).ruleName());
+        assertEquals(RuleName.HIGH_VALUE, alerts.get(0).ruleName());
         assertEquals(RiskLevel.HIGH, alerts.get(0).riskLevel());
     }
 
@@ -89,7 +89,7 @@ class RuleEngineTest {
         List<Alert> alerts = engine.evaluate(sampleTransaction(), Collections.emptyList());
 
         assertEquals(1, alerts.size());
-        assertEquals("ALWAYS_ALERT", alerts.get(0).ruleName());
+        assertEquals(RuleName.HIGH_VALUE, alerts.get(0).ruleName());
     }
 
     @Test
@@ -101,7 +101,7 @@ class RuleEngineTest {
 
         // Broken rule should not prevent the healthy rule from running
         assertEquals(1, alerts.size());
-        assertEquals("ALWAYS_ALERT", alerts.get(0).ruleName());
+        assertEquals(RuleName.HIGH_VALUE, alerts.get(0).ruleName());
     }
 
     @Test
@@ -109,11 +109,11 @@ class RuleEngineTest {
         RuleEngine engine = new RuleEngine(List.of(
                 new AlwaysAlertRule(),
                 new NeverAlertRule()));
-        List<String> names = engine.registeredRules();
+        List<RuleName> names = engine.registeredRules();
 
         assertEquals(2, names.size());
-        assertTrue(names.contains("ALWAYS_ALERT"));
-        assertTrue(names.contains("NEVER_ALERT"));
+        assertTrue(names.contains(RuleName.HIGH_VALUE));
+        assertTrue(names.contains(RuleName.VELOCITY));
     }
 
     @Test
@@ -122,6 +122,7 @@ class RuleEngineTest {
         List<Alert> alerts = engine.evaluate(sampleTransaction(), Collections.emptyList());
 
         assertThrows(UnsupportedOperationException.class,
-                () -> alerts.add(Alert.raise(sampleTransaction(), "FAKE", RiskLevel.LOW, "should fail")));
+                () -> alerts
+                        .add(Alert.raise(sampleTransaction(), RuleName.ROUND_AMOUNT, RiskLevel.LOW, "should fail")));
     }
 }

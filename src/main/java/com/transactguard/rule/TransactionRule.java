@@ -15,17 +15,19 @@ import java.util.Optional;
  * </p>
  *
  * <p>
- * Adding a new detection pattern is as simple as implementing this
- * interface and annotating the class with {@code @Component}. Spring
- * auto-discovery handles the rest — no core code changes required.
+ * Adding a new detection pattern requires:
+ * 1. Adding the rule name to {@link RuleName} (audit-controlled enum)
+ * 2. Implementing this interface and annotating with {@code @Component}
+ * Spring auto-discovery handles the rest — no engine changes required.
  * </p>
  */
 public interface TransactionRule {
 
     /**
-     * Unique name of this rule (e.g., "STRUCTURING", "VELOCITY").
+     * The registered name of this rule from the {@link RuleName} enum.
+     * All rule names must be pre-approved and registered for compliance.
      */
-    String name();
+    RuleName name();
 
     /**
      * Evaluate a transaction against this rule.

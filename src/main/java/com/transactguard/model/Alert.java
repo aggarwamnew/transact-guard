@@ -1,5 +1,7 @@
 package com.transactguard.model;
 
+import com.transactguard.rule.RuleName;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -9,7 +11,7 @@ import java.util.UUID;
 public record Alert(
         String id,
         String transactionId,
-        String ruleName,
+        RuleName ruleName,
         RiskLevel riskLevel,
         String description,
         AlertStatus status,
@@ -24,7 +26,7 @@ public record Alert(
     /**
      * Create a new alert in PENDING_REVIEW status.
      */
-    public static Alert raise(Transaction transaction, String ruleName,
+    public static Alert raise(Transaction transaction, RuleName ruleName,
             RiskLevel riskLevel, String description) {
         return new Alert(
                 UUID.randomUUID().toString(),
