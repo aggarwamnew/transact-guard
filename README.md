@@ -27,17 +27,15 @@ Each detection rule implements the `TransactionRule` interface. Adding a new rul
 
 ---
 
-## 7-Day Build Plan
+## 10-Day Build Plan
 
 - [x] **Day 1** — Project scaffolding, README, CI skeleton
 - [x] **Day 2** — `TransactionRule` interface + rule engine core
 - [x] **Day 3** — `RuleName` enum (closed set for audit compliance) + structured AUDIT logging
 - [x] **Day 4** — `HighValueRule` + `StructuringRule` with full test suites (20 tests passing)
-- [ ] **Day 5** — `VelocityRule` + `POST /transactions` REST endpoint (in-memory storage)
-- [ ] **Day 6** — `GET /alerts` endpoint + in-memory alert store + integration tests
-- [ ] **Day 7** — AWS DynamoDB integration, documentation polish, release
-
----
-
-## License
-Apache-2.0
+- [ ] **Day 5** — `VelocityRule` + `RoundTripRule` implementations with tests
+- [ ] **Day 6** — `POST /transactions` REST endpoint + in-memory transaction store
+- [ ] **Day 7** — `GET /alerts` REST endpoint + in-memory alert store + integration tests
+- [ ] **Day 8** — AWS DynamoDB integration (replace in-memory stores)
+- [ ] **Day 9** — Kafka event streaming (ingest transactions from topic, publish alerts)
+- [ ] **Day 10** — Dashboard metrics endpoint, documentation polish, release
