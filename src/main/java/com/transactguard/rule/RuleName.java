@@ -13,5 +13,5 @@ public enum RuleName {
     HIGH_VALUE,
     STRUCTURING,
     VELOCITY,
-    ROUND_AMOUNT
+    ROUND_TRIP
 }

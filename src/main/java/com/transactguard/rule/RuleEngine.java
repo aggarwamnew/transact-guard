@@ -65,7 +65,7 @@ public class RuleEngine {
                 }
             } catch (Exception e) {
                 log.error("AUDIT | Rule EXCEPTION | txId={} | rule={} | error={}",
-                        rule.name(), transaction.id(), e.getMessage(), e);
+                        transaction.id(), rule.name(), e.getMessage(), e);
             }
         }
 

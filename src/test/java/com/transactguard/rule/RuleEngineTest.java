@@ -123,6 +123,6 @@ class RuleEngineTest {
 
         assertThrows(UnsupportedOperationException.class,
                 () -> alerts
-                        .add(Alert.raise(sampleTransaction(), RuleName.ROUND_AMOUNT, RiskLevel.LOW, "should fail")));
+                        .add(Alert.raise(sampleTransaction(), RuleName.ROUND_TRIP, RiskLevel.LOW, "should fail")));
     }
 }
