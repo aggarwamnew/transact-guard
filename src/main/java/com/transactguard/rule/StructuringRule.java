@@ -56,19 +56,19 @@ public class StructuringRule implements TransactionRule {
 
     @Override
     public Optional<Alert> evaluate(Transaction transaction, List<Transaction> history) {
+        // Guard: if the current transaction is above threshold, HighValueRule handles
+        // it
+        if (transaction.amount().compareTo(reportingThreshold) >= 0) {
+            return Optional.empty();
+        }
+
         Instant cutoff = transaction.timestamp().minus(timeWindow);
 
-        // Include current transaction + recent history within the time window
+        // Recent history within the time window, each below threshold
         List<Transaction> recentTransactions = history.stream()
                 .filter(t -> t.timestamp().isAfter(cutoff))
                 .filter(t -> t.amount().compareTo(reportingThreshold) < 0)
                 .toList();
-
-        // Current transaction must also be below threshold (otherwise HighValueRule
-        // catches it)
-        if (transaction.amount().compareTo(reportingThreshold) >= 0) {
-            return Optional.empty();
-        }
 
         // Count includes the current transaction
         int totalCount = recentTransactions.size() + 1;
