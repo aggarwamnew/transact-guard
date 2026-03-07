@@ -34,8 +34,8 @@ Each detection rule implements the `TransactionRule` interface. Adding a new rul
 - [x] **Day 3** — `RuleName` enum (closed set for audit compliance) + structured AUDIT logging
 - [x] **Day 4** — `HighValueRule` + `StructuringRule` with full test suites (20 tests passing)
 - [x] **Day 5** — `VelocityRule` + `RoundTripRule` implementations with tests (38 tests passing)
-- [ ] **Day 6** — `POST /transactions` REST endpoint + in-memory transaction store
-- [ ] **Day 7** — `GET /alerts` REST endpoint + in-memory alert store + integration tests
+- [x] **Day 6** — `POST /transactions` REST endpoint + in-memory transaction store (60 tests passing)
+- [x] **Day 7** — `GET /alerts` REST endpoint + in-memory alert store + integration tests (60 tests passing)
 - [ ] **Day 8** — AWS DynamoDB integration (replace in-memory stores)
 - [ ] **Day 9** — Kafka event streaming (ingest transactions from topic, publish alerts)
 - [ ] **Day 10** — Dashboard metrics endpoint, documentation polish, release
